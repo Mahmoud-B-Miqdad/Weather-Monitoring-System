@@ -15,7 +15,7 @@ namespace WeatherMonitoringSystem.Domain.Config
 
         private ConfigurationManager()
         {
-            LoadConfiguration();
+                LoadConfiguration();
         }
 
         public static ConfigurationManager Instance
@@ -49,7 +49,7 @@ namespace WeatherMonitoringSystem.Domain.Config
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading configuration: {ex.Message}");
+                throw new Exception($"Error loading configuration: {ex.Message}");
             }
         }
     }

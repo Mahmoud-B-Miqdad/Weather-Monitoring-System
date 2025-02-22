@@ -13,13 +13,13 @@ namespace WeatherMonitoringSystem.Bots
             _config = ConfigurationManager.Instance.SnowBot;
         }
 
-        public void Activate(double temperature, double humidity)
+        public string Activate(double temperature, double humidity)
         {
             if (_config.Enabled && temperature < _config.SensorThreshold)
             {
-                Console.WriteLine("SnowBot activated!");
-                Console.WriteLine($"SnowBot: \"{_config.Message}\"");
+                return $"SnowBot activated!\nSnowBot: \"{_config.Message}\"";
             }
+            return "";
         }
     }
 }

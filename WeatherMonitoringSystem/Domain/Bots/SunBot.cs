@@ -13,13 +13,13 @@ namespace WeatherMonitoringSystem.Bots
             _config = ConfigurationManager.Instance.SunBot;
         }
 
-        public void Activate(double temperature, double humidity)
+        public string Activate(double temperature, double humidity)
         {
             if (_config.Enabled && temperature > _config.SensorThreshold)
             {
-                Console.WriteLine("SunBot activated!");
-                Console.WriteLine($"SunBot: \"{_config.Message}\"");
+                return $"SunBot activated!\nSunBot: \"{_config.Message}\"";
             }
+            return "";
         }
     }
 }

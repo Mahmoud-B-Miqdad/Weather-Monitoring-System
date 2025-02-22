@@ -13,13 +13,13 @@ namespace WeatherMonitoringSystem.Bots
             _config = ConfigurationManager.Instance.RainBot;
         }
 
-        public void Activate(double temperature, double humidity)
+        public string Activate(double temperature, double humidity)
         {
             if (_config.Enabled && humidity > _config.SensorThreshold)
             {
-                Console.WriteLine("RainBot activated!");
-                Console.WriteLine($"RainBot: \"{_config.Message}\"");
+                return $"RainBot activated!\nRainBot: \"{_config.Message}\"";
             }
+            return "";
         }
     }
 }
