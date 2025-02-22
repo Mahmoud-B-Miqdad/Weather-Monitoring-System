@@ -49,7 +49,7 @@ namespace WeatherMonitoringSystem.Domain.Config
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error loading configuration: {ex.Message}");
+                throw new Exception();
             }
         }
     }

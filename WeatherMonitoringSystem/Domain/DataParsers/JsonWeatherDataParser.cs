@@ -15,7 +15,7 @@ namespace WeatherMonitoringSystem.DataParsers
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error parsing JSON: {ex.Message}");
+                throw new Exception();
             }
         }
     }
