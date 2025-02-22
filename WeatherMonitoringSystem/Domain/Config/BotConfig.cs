@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json;
-
+﻿
 namespace WeatherMonitoringSystem.Config
 {
     using Newtonsoft.Json;
