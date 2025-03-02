@@ -3,20 +3,19 @@ using Newtonsoft.Json;
 
 using WeatherMonitoringSystem.Core;
 
-namespace WeatherMonitoringSystem.DataParsers
+namespace WeatherMonitoringSystem.DataParsers;
+
+public class JsonWeatherDataParser : IWeatherDataParser
 {
-    public class JsonWeatherDataParser : IWeatherDataParser
+    public WeatherData Parse(string inputData)
     {
-        public WeatherData Parse(string inputData)
+        try
         {
-            try
-            {
-                return JsonConvert.DeserializeObject<WeatherData>(inputData);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception();
-            }
+            return JsonConvert.DeserializeObject<WeatherData>(inputData);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception();
         }
     }
 }

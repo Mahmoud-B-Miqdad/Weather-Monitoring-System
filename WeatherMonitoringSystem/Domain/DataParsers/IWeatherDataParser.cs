@@ -1,10 +1,9 @@
 ﻿
 using WeatherMonitoringSystem.Core;
 
-namespace WeatherMonitoringSystem.DataParsers
+namespace WeatherMonitoringSystem.DataParsers;
+
+public interface IWeatherDataParser
 {
-    public interface IWeatherDataParser
-    {
-        WeatherData Parse(string inputData);
-    }
+    WeatherData Parse(string inputData);
 }

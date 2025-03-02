@@ -1,25 +1,30 @@
 ﻿
 using WeatherMonitoringSystem.Config;
+using WeatherMonitoringSystem.Core;
 using WeatherMonitoringSystem.Domain.Config;
 
-namespace WeatherMonitoringSystem.Bots
+namespace WeatherMonitoringSystem.Bots;
+
+public class RainBot : IWeatherBot
 {
-    public class RainBot : IWeatherBot
+    private readonly BotConfig _config;
+    private bool _isActivated;
+
+    public RainBot()
     {
-        private readonly BotConfig _config;
+        _config = ConfigurationManager.Instance.RainBot;
+    }
 
-        public RainBot()
-        {
-            _config = ConfigurationManager.Instance.RainBot;
-        }
+    public bool Update(WeatherData data, out string message)
+    {
+        _isActivated = _config.Enabled && data.Humidity > _config.SensorThreshold;
 
-        public string Activate(double temperature, double humidity)
-        {
-            if (_config.Enabled && humidity > _config.SensorThreshold)
-            {
-                return $"RainBot activated!\nRainBot: \"{_config.Message}\"";
-            }
-            return "";
-        }
+        if (_isActivated)
+            message = $"RainBot: \"{_config.Message}\"";
+
+        else
+            message = string.Empty;
+
+        return _isActivated;
     }
 }

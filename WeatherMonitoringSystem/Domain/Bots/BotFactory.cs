@@ -1,16 +1,25 @@
 ﻿
-namespace WeatherMonitoringSystem.Bots
+using WeatherMonitoringSystem.Core;
+using static System.Collections.Specialized.BitVector32;
+
+namespace WeatherMonitoringSystem.Bots;
+
+public static class BotFactory
 {
-    public static class BotFactory
+    public static List<IWeatherBot> CreateBots(WeatherStation station)
     {
-        public static List<IWeatherBot> CreateBots()
-        {
-            return new List<IWeatherBot>
+        var bots = new List<IWeatherBot>
             {
                 new RainBot(),
                 new SunBot(),
                 new SnowBot()
             };
+
+        foreach (var bot in bots)
+        {
+            station.AddBot(bot);
         }
+
+        return bots;
     }
 }

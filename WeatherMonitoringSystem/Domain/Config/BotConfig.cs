@@ -1,7 +1,7 @@
-﻿
-namespace WeatherMonitoringSystem.Config
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
+namespace WeatherMonitoringSystem.Config;
+
     public class BotConfig
     {
         public bool Enabled { get; set; }
@@ -31,4 +31,3 @@ namespace WeatherMonitoringSystem.Config
             SensorThreshold = HumidityThreshold ?? TemperatureThreshold ?? 0;
         }
     }
-}

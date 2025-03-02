@@ -1,26 +1,31 @@
 ﻿
 using WeatherMonitoringSystem.Config;
+using WeatherMonitoringSystem.Core;
 using WeatherMonitoringSystem.Domain.Config;
 
-namespace WeatherMonitoringSystem.Bots
+namespace WeatherMonitoringSystem.Bots;
+
+public class SnowBot : IWeatherBot
 {
-    public class SnowBot : IWeatherBot
+    private readonly BotConfig _config;
+    private bool _isActivated;
+
+    public SnowBot()
     {
-        private readonly BotConfig _config;
+        _config = ConfigurationManager.Instance.SnowBot;
+    }
 
-        public SnowBot()
-        {
-            _config = ConfigurationManager.Instance.SnowBot;
-        }
+    public bool Update(WeatherData data, out string message)
+    {
+        _isActivated = _config.Enabled && data.Temperature < _config.SensorThreshold;
 
-        public string Activate(double temperature, double humidity)
-        {
-            if (_config.Enabled && temperature < _config.SensorThreshold)
-            {
-                return $"SnowBot activated!\nSnowBot: \"{_config.Message}\"";
-            }
-            return "";
-        }
+        if (_isActivated)
+            message = $"SnowBot: \"{_config.Message}\"";
+
+        else
+            message = string.Empty;
+
+        return _isActivated;
     }
 }
 

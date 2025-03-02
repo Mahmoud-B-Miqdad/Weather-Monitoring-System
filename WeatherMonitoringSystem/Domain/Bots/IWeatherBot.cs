@@ -1,9 +1,10 @@
 ﻿
-namespace WeatherMonitoringSystem.Bots
+using WeatherMonitoringSystem.Core;
+
+namespace WeatherMonitoringSystem.Bots;
+
+public interface IWeatherBot
 {
-    public interface IWeatherBot
-    {
-        string Activate(double temperature, double humidity);
-    }
+    bool Update(WeatherData data, out string message);
 }
 
