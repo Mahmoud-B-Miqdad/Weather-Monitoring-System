@@ -7,36 +7,41 @@ namespace WeatherMonitoringSystem.UI;
 
 public static class UserInteraction
 {
-    public static void Run()
+        public static void Run()
     {
         PrintMessage("Welcome to the Real-Time Weather Monitoring System!");
 
-        string format = GetDataFormat();
-        IWeatherDataParser parser = GetParser(format);
-        if (parser == null) return;
+        WeatherDataParserFactory parserFactory = new WeatherDataParserFactory();
 
-        WeatherData weatherData = GetWeatherData(parser);
-        if (weatherData == null) return;
+        while (true)
+        {
+            string format = GetDataFormat();
 
-        ActivateBots(weatherData);
+            try
+            {
+                parserFactory.SetParser(format);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                continue;
+            }
+
+            IWeatherDataParser parser = parserFactory.GetParser();
+            WeatherData weatherData = GetWeatherData(parser);
+            if (weatherData == null) return;
+
+            ActivateBots(weatherData);
+
+            Console.WriteLine("Do you want to change the parsing method? (yes/no)");
+            string change = Console.ReadLine().Trim().ToLower();
+            if (change != "yes") break;
+        }
     }
 
     private static string GetDataFormat()
     {
         return GetUserInput("Enter data format (JSON/XML): ").Trim().ToLower();
-    }
-
-    private static IWeatherDataParser GetParser(string format)
-    {
-        try
-        {
-            return WeatherDataParserFactory.GetParser(format);
-        }
-        catch (Exception ex)
-        {
-            PrintMessage($"Error: {ex.Message}");
-            return null;
-        }
     }
 
     private static WeatherData GetWeatherData(IWeatherDataParser parser)

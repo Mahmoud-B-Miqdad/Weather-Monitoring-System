@@ -1,15 +1,21 @@
-﻿
-namespace WeatherMonitoringSystem.DataParsers;
+﻿namespace WeatherMonitoringSystem.DataParsers;
 
-public static class WeatherDataParserFactory
+public class WeatherDataParserFactory
 {
-    public static IWeatherDataParser GetParser(string inputFormat)
+    private IWeatherDataParser _currentParser;
+
+    public void SetParser(string inputFormat)
     {
-        return inputFormat.ToLower() switch
+        _currentParser = inputFormat.ToLower() switch
         {
             "json" => new JsonWeatherDataParser(),
             "xml" => new XmlWeatherDataParser(),
             _ => throw new ArgumentException("Unsupported data format.")
         };
+    }
+
+    public IWeatherDataParser GetParser()
+    {
+        return _currentParser ?? throw new InvalidOperationException("Parser has not been set.");
     }
 }
