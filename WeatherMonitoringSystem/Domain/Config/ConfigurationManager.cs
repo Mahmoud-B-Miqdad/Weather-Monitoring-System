@@ -31,25 +31,19 @@ public class ConfigurationManager
 
     private void LoadConfiguration()
     {
-        try
+        string relativePath = @"JSON_File\botConfig.json";
+        string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+        if (!File.Exists(configPath))
         {
-            string relativePath = @"JSON_File\botConfig.json";
-            string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
-            if (!File.Exists(configPath))
-            {
-                throw new FileNotFoundException("Configuration file not found.");
-            }
-
-            string json = File.ReadAllText(configPath);
-            dynamic config = JsonConvert.DeserializeObject<dynamic>(json);
-
-            RainBot = JsonConvert.DeserializeObject<BotConfig>(config["RainBot"].ToString());
-            SunBot = JsonConvert.DeserializeObject<BotConfig>(config["SunBot"].ToString());
-            SnowBot = JsonConvert.DeserializeObject<BotConfig>(config["SnowBot"].ToString());
+            throw new FileNotFoundException("Configuration file not found.");
         }
-        catch (Exception ex)
-        {
-            throw new Exception();
-        }
+
+        string json = File.ReadAllText(configPath);
+        dynamic config = JsonConvert.DeserializeObject<dynamic>(json);
+
+        RainBot = JsonConvert.DeserializeObject<BotConfig>(config["RainBot"].ToString());
+        SunBot = JsonConvert.DeserializeObject<BotConfig>(config["SunBot"].ToString());
+        SnowBot = JsonConvert.DeserializeObject<BotConfig>(config["SnowBot"].ToString());
+
     }
 }
