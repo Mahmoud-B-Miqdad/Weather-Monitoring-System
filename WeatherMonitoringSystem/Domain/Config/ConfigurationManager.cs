@@ -1,19 +1,17 @@
-﻿
-using WeatherMonitoringSystem.Config;
+﻿using WeatherMonitoringSystem.Config;
 using Newtonsoft.Json;
 
 namespace WeatherMonitoringSystem.Domain.Config;
 
 public class ConfigurationManager
 {
-    private static readonly ConfigurationManager _instance = new();
-    private static readonly object _lock = new object();
+    private static readonly Lazy<ConfigurationManager> _instance = new(() => new ConfigurationManager());
 
     public BotConfig RainBot { get; private set; }
     public BotConfig SunBot { get; private set; }
     public BotConfig SnowBot { get; private set; }
 
-    public static ConfigurationManager Instance => _instance;
+    public static ConfigurationManager Instance => _instance.Value;
 
     private ConfigurationManager()
     {
@@ -24,17 +22,24 @@ public class ConfigurationManager
     {
         string relativePath = @"JSON_File\botConfig.json";
         string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+
         if (!File.Exists(configPath))
         {
-            throw new FileNotFoundException("Configuration file not found.");
+            throw new FileNotFoundException($"Configuration file not found: {configPath}");
         }
 
         string json = File.ReadAllText(configPath);
-        dynamic config = JsonConvert.DeserializeObject<dynamic>(json);
 
-        RainBot = JsonConvert.DeserializeObject<BotConfig>(config["RainBot"].ToString());
-        SunBot = JsonConvert.DeserializeObject<BotConfig>(config["SunBot"].ToString());
-        SnowBot = JsonConvert.DeserializeObject<BotConfig>(config["SnowBot"].ToString());
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            throw new Exception("Configuration file is empty.");
+        }
 
+        var config = JsonConvert.DeserializeObject<BotsConfiguration>(json)
+                     ?? throw new Exception("Failed to deserialize configuration file.");
+
+        RainBot = config.RainBot ?? throw new Exception("RainBot configuration is missing.");
+        SunBot = config.SunBot ?? throw new Exception("SunBot configuration is missing.");
+        SnowBot = config.SnowBot ?? throw new Exception("SnowBot configuration is missing.");
     }
 }
