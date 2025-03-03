@@ -6,27 +6,18 @@ namespace WeatherMonitoringSystem.Domain.Config;
 
 public class ConfigurationManager
 {
-    private static ConfigurationManager _instance;
+    private static readonly ConfigurationManager _instance = new();
     private static readonly object _lock = new object();
 
     public BotConfig RainBot { get; private set; }
     public BotConfig SunBot { get; private set; }
     public BotConfig SnowBot { get; private set; }
 
+    public static ConfigurationManager Instance => _instance;
+
     private ConfigurationManager()
     {
-            LoadConfiguration();
-    }
-
-    public static ConfigurationManager Instance
-    {
-        get
-        {
-            lock (_lock)
-            {
-                return _instance ??= new ConfigurationManager();
-            }
-        }
+        LoadConfiguration();
     }
 
     private void LoadConfiguration()
