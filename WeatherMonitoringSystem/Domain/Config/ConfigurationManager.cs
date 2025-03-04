@@ -21,7 +21,7 @@ public class ConfigurationManager
     private void LoadConfiguration()
     {
         string relativePath = @"JSON_File\botConfig.json";
-        string configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+        string configPath = Path.Combine(Environment.CurrentDirectory, relativePath);
 
         if (!File.Exists(configPath))
         {
