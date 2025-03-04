@@ -17,19 +17,30 @@ namespace WeatherMonitoringSystem.Core
             _bots.Remove(bot);
         }
 
-        public void SetWeatherData(WeatherData data)
+        public List<(IWeatherBot bot, string message)> SetWeatherData(WeatherData data)
         {
             _currentWeather = data;
-            NotifyBots();
+            return NotifyBots();
         }
 
-        private void NotifyBots()
+        private List<(IWeatherBot bot, string message)> NotifyBots()
         {
+            List<(IWeatherBot, string)> activatedBots = new List<(IWeatherBot, string)>();
             string botMessage;
+
             foreach (var bot in _bots)
             {
-                bot.Update(_currentWeather,out botMessage);
+                bool isActivated = bot.Update(_currentWeather, out botMessage);
+
+                if (isActivated)
+                {
+                    activatedBots.Add((bot, botMessage));
+                }
             }
+
+            return activatedBots;
         }
+
+
     }
 }

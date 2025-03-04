@@ -7,7 +7,7 @@ namespace WeatherMonitoringSystem.UI;
 
 public static class UserInteraction
 {
-        public static void Run()
+    public static void Run()
     {
         PrintMessage("Welcome to the Real-Time Weather Monitoring System!");
 
@@ -76,19 +76,13 @@ public static class UserInteraction
             WeatherStation station = new WeatherStation();
 
             List<IWeatherBot> bots = BotFactory.CreateBots(station);
-            station.SetWeatherData(weatherData);
+            var activatedBots = station.SetWeatherData(weatherData);
 
             PrintMessage("*****************************************");
-            foreach (var bot in bots)
+            foreach (var (bot, message) in activatedBots)
             {
-                string botMessage;
-                bool isActivated = bot.Update(weatherData, out botMessage);
-
-                if (isActivated)
-                {
-                    PrintMessage($"{bot.GetType().Name} activated!");
-                    PrintMessage(botMessage);
-                }
+                PrintMessage($"{bot.GetType().Name} activated!");
+                PrintMessage(message);
             }
             PrintMessage("*****************************************");
         }
