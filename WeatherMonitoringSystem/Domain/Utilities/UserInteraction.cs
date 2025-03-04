@@ -7,11 +7,12 @@ namespace WeatherMonitoringSystem.UI;
 
 public static class UserInteraction
 {
+
     public static void Run()
     {
         PrintMessage("Welcome to the Real-Time Weather Monitoring System!");
 
-        WeatherDataParserFactory parserFactory = new WeatherDataParserFactory();
+        WeatherParserStrategy parserStrategy = new WeatherParserStrategy();
 
         while (true)
         {
@@ -19,7 +20,16 @@ public static class UserInteraction
 
             try
             {
-                parserFactory.SetParser(format);
+                IWeatherDataParser parser = format.ToLower() switch
+                {
+                    "json" => new JsonWeatherDataParser(),
+                    "xml" => new XmlWeatherDataParser(),
+                    _ => throw new ArgumentException("Unsupported data format.")
+                };
+
+                parserStrategy.SetParser(parser);
+                WeatherData weatherData = GetWeatherData(parser);
+                ActivateBots(weatherData);
             }
             catch (Exception ex)
             {
@@ -27,11 +37,6 @@ public static class UserInteraction
                 continue;
             }
 
-            IWeatherDataParser parser = parserFactory.GetParser();
-            WeatherData weatherData = GetWeatherData(parser);
-            if (weatherData == null) return;
-
-            ActivateBots(weatherData);
 
             Console.WriteLine("Do you want to change the parsing method? (yes/no)");
             string change = Console.ReadLine().Trim().ToLower();
