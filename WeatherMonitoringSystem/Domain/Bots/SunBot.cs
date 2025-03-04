@@ -7,24 +7,24 @@ namespace WeatherMonitoringSystem.Bots;
 
 public class SunBot : IWeatherBot
 {
-    private readonly BotConfig _config;
-    private bool _isActivated;
+    public BotConfig Config { get; }
+    public bool IsActivated { get; set; }
 
     public SunBot()
     {
-        _config = ConfigurationManager.Instance.SunBot;
+        Config = ConfigurationManager.Instance.SunBot;
     }
 
     public bool Update(WeatherData data, out string message)
     {
-        _isActivated = _config.Enabled && data.Temperature > _config.SensorThreshold;
+        IsActivated = Config.Enabled && data.Temperature > Config.SensorThreshold;
 
-        if (_isActivated)
-            message = $"SunBot: \"{_config.Message}\"";
+        if (IsActivated)
+            message = $"SunBot: \"{Config.Message}\"";
 
         else
             message = string.Empty;
 
-        return _isActivated;
+        return IsActivated;
     }
 }

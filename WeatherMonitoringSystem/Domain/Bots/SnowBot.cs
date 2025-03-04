@@ -7,25 +7,25 @@ namespace WeatherMonitoringSystem.Bots;
 
 public class SnowBot : IWeatherBot
 {
-    private readonly BotConfig _config;
-    private bool _isActivated;
+    public BotConfig Config { get; }
+    public bool IsActivated { get; set; }
 
     public SnowBot()
     {
-        _config = ConfigurationManager.Instance.SnowBot;
+        Config = ConfigurationManager.Instance.SnowBot;
     }
 
     public bool Update(WeatherData data, out string message)
     {
-        _isActivated = _config.Enabled && data.Temperature < _config.SensorThreshold;
+        IsActivated = Config.Enabled && data.Temperature < Config.SensorThreshold;
 
-        if (_isActivated)
-            message = $"SnowBot: \"{_config.Message}\"";
+        if (IsActivated)
+            message = $"SnowBot: \"{Config.Message}\"";
 
         else
             message = string.Empty;
 
-        return _isActivated;
+        return IsActivated;
     }
 }
 

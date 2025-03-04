@@ -7,24 +7,23 @@ namespace WeatherMonitoringSystem.Bots;
 
 public class RainBot : IWeatherBot
 {
-    private readonly BotConfig _config;
-    private bool _isActivated;
-
+    public BotConfig Config { get; }
+    public bool IsActivated { get; set; }
     public RainBot()
     {
-        _config = ConfigurationManager.Instance.RainBot;
+        Config = ConfigurationManager.Instance.RainBot;
     }
 
     public bool Update(WeatherData data, out string message)
     {
-        _isActivated = _config.Enabled && data.Humidity > _config.SensorThreshold;
+        IsActivated = Config.Enabled && data.Humidity > Config.SensorThreshold;
 
-        if (_isActivated)
-            message = $"RainBot: \"{_config.Message}\"";
+        if (IsActivated)
+            message = $"RainBot: \"{Config.Message}\"";
 
         else
             message = string.Empty;
 
-        return _isActivated;
+        return IsActivated;
     }
 }
