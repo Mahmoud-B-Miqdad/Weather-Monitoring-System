@@ -101,10 +101,10 @@ public static class UserInteraction
             var activatedBots = station.SetWeatherData(weatherData);
 
             PrintMessage("*****************************************");
-            foreach (var (bot, message) in activatedBots)
+            foreach (var bot in activatedBots)
             {
                 PrintMessage($"{bot.GetType().Name} activated!");
-                PrintMessage(message);
+                PrintMessage(bot.Message);
             }
             PrintMessage("*****************************************");
         }

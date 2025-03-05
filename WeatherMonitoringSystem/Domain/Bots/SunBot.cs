@@ -9,21 +9,23 @@ public class SunBot : IWeatherBot
 {
     public BotConfig Config { get; }
     public bool IsActivated { get; set; }
+    public string Message { get; private set; } = string.Empty;
+
 
     public SunBot()
     {
         Config = ConfigurationManager.Instance.SunBot;
     }
 
-    public bool Update(WeatherData data, out string message)
+    public bool Trigger (WeatherData data)
     {
         IsActivated = Config.Enabled && data.Temperature > Config.SensorThreshold;
 
         if (IsActivated)
-            message = $"SunBot: \"{Config.Message}\"";
+            Message = $"SunBot: \"{Config.Message}\"";
 
         else
-            message = string.Empty;
+            Message = string.Empty;
 
         return IsActivated;
     }

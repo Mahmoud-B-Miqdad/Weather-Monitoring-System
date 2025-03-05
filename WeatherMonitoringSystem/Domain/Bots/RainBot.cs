@@ -9,20 +9,21 @@ public class RainBot : IWeatherBot
 {
     public BotConfig Config { get; }
     public bool IsActivated { get; set; }
+    public string Message { get; private set; } = string.Empty;
     public RainBot()
     {
         Config = ConfigurationManager.Instance.RainBot;
     }
 
-    public bool Update(WeatherData data, out string message)
+    public bool Trigger (WeatherData data)
     {
         IsActivated = Config.Enabled && data.Humidity > Config.SensorThreshold;
 
         if (IsActivated)
-            message = $"RainBot: \"{Config.Message}\"";
+            Message = $"RainBot: \"{Config.Message}\"";
 
         else
-            message = string.Empty;
+            Message = string.Empty;
 
         return IsActivated;
     }

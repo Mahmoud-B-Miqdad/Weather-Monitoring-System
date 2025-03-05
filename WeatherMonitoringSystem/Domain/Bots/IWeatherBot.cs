@@ -6,8 +6,9 @@ namespace WeatherMonitoringSystem.Bots;
 
 public interface IWeatherBot
 {
-    bool Update(WeatherData data, out string message);
+    bool Trigger(WeatherData data);
     BotConfig Config { get; }  
     bool IsActivated { get; set; }
+    string Message { get; }
 }
 
