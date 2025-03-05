@@ -20,16 +20,10 @@ public static class UserInteraction
 
             try
             {
-                IWeatherDataParser parser = format.ToLower() switch
-                {
-                    "json" => new JsonWeatherDataParser(),
-                    "xml" => new XmlWeatherDataParser(),
-                    _ => throw new ArgumentException("Unsupported data format.")
-                };
+                IWeatherDataParser parser = GetWeatherDataParser (format);
 
                 parserStrategy.SetParser(parser);
-                WeatherData weatherData = GetWeatherData(parser);
-                ActivateBots(weatherData);
+               
             }
             catch (Exception ex)
             {
@@ -37,8 +31,20 @@ public static class UserInteraction
                 continue;
             }
 
+            string inputData = GetUserInput("Enter weather data: ").Trim();
 
-            Console.WriteLine("Do you want to change the parsing method? (yes/no)");
+            try
+            {
+                WeatherData weatherData = parserStrategy.GetWeatherData(inputData);
+                PrintMessage($"\nReceived Data: {weatherData}");
+                ActivateBots(weatherData);
+            }
+            catch (Exception ex)
+            {
+                PrintMessage($"\nFailed to process weather data.{ex.Message}");
+            }
+
+            PrintMessage("Do you want to change the parsing method? (yes/no)");
             string change = Console.ReadLine().Trim().ToLower();
             if (change != "yes") break;
         }
@@ -47,6 +53,17 @@ public static class UserInteraction
     private static string GetDataFormat()
     {
         return GetUserInput("Enter data format (JSON/XML): ").Trim().ToLower();
+    }
+
+    private static IWeatherDataParser GetWeatherDataParser (string format)
+    {
+        IWeatherDataParser parser = format.ToLower() switch
+        {
+            "json" => new JsonWeatherDataParser(),
+            "xml" => new XmlWeatherDataParser(),
+            _ => throw new ArgumentException("Unsupported data format.")
+        };
+        return parser;
     }
 
     private static WeatherData GetWeatherData(IWeatherDataParser parser)
