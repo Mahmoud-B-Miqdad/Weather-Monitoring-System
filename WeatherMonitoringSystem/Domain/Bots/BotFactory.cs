@@ -6,7 +6,7 @@ namespace WeatherMonitoringSystem.Bots;
 
 public static class BotFactory
 {
-    public static List<IWeatherBot> CreateBots(WeatherStation station)
+    public static List<IWeatherBot> CreateBots()
     {
         var bots = new List<IWeatherBot>
             {
@@ -14,11 +14,6 @@ public static class BotFactory
                 new SunBot(),
                 new SnowBot()
             };
-
-        foreach (var bot in bots)
-        {
-            station.AddBot(bot);
-        }
 
         return bots;
     }

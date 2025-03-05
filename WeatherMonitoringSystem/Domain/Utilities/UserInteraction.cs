@@ -66,38 +66,14 @@ public static class UserInteraction
         return parser;
     }
 
-    private static WeatherData GetWeatherData(IWeatherDataParser parser)
-    {
-        try
-        {
-            string inputData = GetUserInput("Enter weather data: ").Trim();
-            WeatherData weatherData = parser.Parse(inputData);
-
-            if (weatherData == null)
-            {
-                PrintMessage("\nFailed to process weather data.");
-            }
-            else
-            {
-                PrintMessage($"\nReceived Data: {weatherData}");
-            }
-
-            return weatherData;
-        }
-        catch(Exception ex)
-        {
-            PrintMessage($"Error parsing JSON/XML: {ex.Message}");
-            return null;
-        }
-    }
-
     private static void ActivateBots(WeatherData weatherData)
     {
         try
         {
             WeatherStation station = new WeatherStation();
 
-            List<IWeatherBot> bots = BotFactory.CreateBots(station);
+            List<IWeatherBot> bots = BotFactory.CreateBots();
+            station.AddBots(bots);
             var activatedBots = station.SetWeatherData(weatherData);
 
             PrintMessage("*****************************************");
