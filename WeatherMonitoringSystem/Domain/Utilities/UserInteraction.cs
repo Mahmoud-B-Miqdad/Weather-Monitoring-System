@@ -13,6 +13,7 @@ public static class UserInteraction
         PrintMessage("Welcome to the Real-Time Weather Monitoring System!");
 
         WeatherParserStrategy parserStrategy = new WeatherParserStrategy();
+        IWeatherDataParser parser = null;
 
         while (true)
         {
@@ -20,16 +21,32 @@ public static class UserInteraction
 
             try
             {
-                IWeatherDataParser parser = GetWeatherDataParser (format);
-
-                parserStrategy.SetParser(parser);
-               
+                parser = GetWeatherDataParser (format);               
+            }
+            catch (ArgumentException argEx) 
+            {
+                PrintMessage("There was an error with the data format. Please check the input data.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                continue;
+                PrintMessage("Something went wrong. Please try again later.");
             }
+
+
+            try
+            {
+                parserStrategy.SetParser(parser);
+            }
+            catch (ArgumentNullException argNullEx) 
+            {
+                PrintMessage("The required data was not found. Please check the settings.");
+            }
+            catch (Exception ex)
+            {
+                PrintMessage("Something went wrong. Please try again later.");
+            }
+
+
 
             string inputData = GetUserInput("Enter weather data: ").Trim();
 
@@ -39,9 +56,13 @@ public static class UserInteraction
                 PrintMessage($"\nReceived Data: {weatherData}");
                 ActivateBots(weatherData);
             }
+            catch (InvalidOperationException InvOpEx)
+            {
+                PrintMessage($"\nFailed to process weather data.");
+            }
             catch (Exception ex)
             {
-                PrintMessage($"\nFailed to process weather data.{ex.Message}");
+                PrintMessage("Something went wrong. Please try again later.");
             }
 
             PrintMessage("Do you want to change the parsing method? (yes/no)");
@@ -68,26 +89,31 @@ public static class UserInteraction
 
     private static void ActivateBots(WeatherData weatherData)
     {
+        WeatherStation station = new WeatherStation();
+        List<IWeatherBot> bots = BotFactory.CreateBots();
+        station.AddBots(bots);
+        List<IWeatherBot> activatedBots = null;
         try
         {
-            WeatherStation station = new WeatherStation();
-
-            List<IWeatherBot> bots = BotFactory.CreateBots();
-            station.AddBots(bots);
-            var activatedBots = station.SetWeatherData(weatherData);
-
-            PrintMessage("*****************************************");
-            foreach (var bot in activatedBots)
-            {
-                PrintMessage($"{bot.GetType().Name} activated!");
-                PrintMessage(bot.Message);
-            }
-            PrintMessage("*****************************************");
+            activatedBots = station.SetWeatherData(weatherData);
+        }
+        catch(FileNotFoundException FNFEX)
+        {
+            PrintMessage("The specified file could not be found. Please ensure the file path is correct and try again.");
         }
         catch (Exception ex)
         {
             PrintMessage($"Error loading configuration: {ex.Message}");
         }
+
+
+        PrintMessage("*****************************************");
+        foreach (var bot in activatedBots)
+        {
+            PrintMessage($"{bot.GetType().Name} activated!");
+            PrintMessage(bot.Message);
+        }
+        PrintMessage("*****************************************");
     }
 
     public static void PrintMessage(string message)

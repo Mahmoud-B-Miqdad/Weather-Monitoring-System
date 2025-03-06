@@ -10,6 +10,7 @@ public class RainBot : IWeatherBot
     public BotConfig Config { get; }
     public bool IsActivated { get; set; }
     public string Message { get; private set; } = string.Empty;
+
     public RainBot()
     {
         Config = ConfigurationManager.Instance.RainBot;

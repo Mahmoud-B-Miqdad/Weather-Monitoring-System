@@ -11,7 +11,6 @@ public class SnowBot : IWeatherBot
     public bool IsActivated { get; set; }
     public string Message { get; private set; } = string.Empty;
 
-
     public SnowBot()
     {
         Config = ConfigurationManager.Instance.SnowBot;

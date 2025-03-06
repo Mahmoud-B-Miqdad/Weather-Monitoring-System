@@ -20,10 +20,10 @@ namespace WeatherMonitoringSystem.Core
         public List<IWeatherBot> SetWeatherData(WeatherData data)
         {
             _currentWeather = data;
-            return NotifyBots();
+            return GetActivatedBots();
         }
 
-        private List<IWeatherBot> NotifyBots()
+        private List<IWeatherBot> GetActivatedBots()
         {
             List<IWeatherBot> activatedBots = new List<IWeatherBot>();
 

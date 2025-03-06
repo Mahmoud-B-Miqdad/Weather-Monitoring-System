@@ -11,7 +11,6 @@ public class SunBot : IWeatherBot
     public bool IsActivated { get; set; }
     public string Message { get; private set; } = string.Empty;
 
-
     public SunBot()
     {
         Config = ConfigurationManager.Instance.SunBot;
