@@ -1,7 +1,9 @@
 ﻿
+using System.Xml;
 using WeatherMonitoringSystem.Bots;
 using WeatherMonitoringSystem.Core;
 using WeatherMonitoringSystem.DataParsers;
+using Newtonsoft.Json;
 
 namespace WeatherMonitoringSystem.UI;
 
@@ -60,10 +62,19 @@ public static class UserInteraction
             {
                 PrintMessage($"\nFailed to process weather data.");
             }
+            catch (JsonException jsonEx)
+            {
+                PrintMessage("There was an error parsing the JSON data. Please check the input data.");
+            }
+            catch (XmlException xmlEx)
+            {
+                PrintMessage("There was an error parsing the XML data. Please check the input data.");
+            }
             catch (Exception ex)
             {
                 PrintMessage("Something went wrong. Please try again later.");
             }
+
 
             PrintMessage("Do you want to change the parsing method? (yes/no)");
             string change = Console.ReadLine().Trim().ToLower();

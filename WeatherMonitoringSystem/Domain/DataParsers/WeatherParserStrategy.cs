@@ -1,5 +1,7 @@
-﻿using WeatherMonitoringSystem.Core;
+﻿using System.Xml;
+using WeatherMonitoringSystem.Core;
 using WeatherMonitoringSystem.DataParsers;
+using Newtonsoft.Json;
 
 public class WeatherParserStrategy
 {
@@ -19,9 +21,13 @@ public class WeatherParserStrategy
         {
             return _parser.Parse(inputData);
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
-            throw new Exception($"Error parsing JSON/XML: {ex.Message}");
+            throw new JsonException($"Error parsing JSON: {ex.Message}", ex);
+        }
+        catch (XmlException ex)
+        {
+            throw new XmlException($"Error parsing XML: {ex.Message}", ex);
         }
     }
 }
