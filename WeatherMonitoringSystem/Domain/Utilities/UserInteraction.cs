@@ -23,37 +23,11 @@ public static class UserInteraction
 
             try
             {
-                parser = GetWeatherDataParser (format);               
-            }
-            catch (ArgumentException argEx) 
-            {
-                PrintMessage("There was an error with the data format. Please check the input data.");
-            }
-            catch (Exception ex)
-            {
-                PrintMessage("Something went wrong. Please try again later.");
-            }
-
-
-            try
-            {
+                parser = GetWeatherDataParser (format);
                 parserStrategy.SetParser(parser);
-            }
-            catch (ArgumentNullException argNullEx) 
-            {
-                PrintMessage("The required data was not found. Please check the settings.");
-            }
-            catch (Exception ex)
-            {
-                PrintMessage("Something went wrong. Please try again later.");
-            }
 
+                string inputData = GetUserInput("Enter weather data: ").Trim();
 
-
-            string inputData = GetUserInput("Enter weather data: ").Trim();
-
-            try
-            {
                 WeatherData weatherData = parserStrategy.GetWeatherData(inputData);
                 PrintMessage($"\nReceived Data: {weatherData}");
                 ActivateBots(weatherData);
@@ -69,6 +43,14 @@ public static class UserInteraction
             catch (XmlException xmlEx)
             {
                 PrintMessage("There was an error parsing the XML data. Please check the input data.");
+            }
+            catch (ArgumentNullException argNullEx)
+            {
+                PrintMessage("The required data was not found. Please check the settings.");
+            }
+            catch (ArgumentException argEx) 
+            {
+                PrintMessage("There was an error with the data format. Please check the input data.");
             }
             catch (Exception ex)
             {
