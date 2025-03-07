@@ -20,24 +20,21 @@ namespace WeatherMonitoringSystem.Core
         public List<IWeatherBot> SetWeatherData(WeatherData data)
         {
             _currentWeather = data;
+            ActivateBots();
             return GetActivatedBots();
+        }
+
+        private void ActivateBots()
+        {
+            foreach (var bot in _bots)
+            {
+                bot.Trigger(_currentWeather);
+            }
         }
 
         private List<IWeatherBot> GetActivatedBots()
         {
-            List<IWeatherBot> activatedBots = new List<IWeatherBot>();
-
-            foreach (var bot in _bots)
-            {
-                bool isActivated = bot.Trigger (_currentWeather);
-
-                if (isActivated)
-                {
-                    activatedBots.Add((bot));
-                }
-            }
-
-            return activatedBots;
+            return _bots.Where(bot => bot.IsActivated).ToList();
         }
     }
 }
