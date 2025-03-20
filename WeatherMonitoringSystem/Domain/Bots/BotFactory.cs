@@ -1,6 +1,4 @@
-﻿
-using WeatherMonitoringSystem.Core;
-using static System.Collections.Specialized.BitVector32;
+﻿using WeatherMonitoringSystem.Domain.Config;
 
 namespace WeatherMonitoringSystem.Bots;
 
@@ -10,9 +8,9 @@ public static class BotFactory
     {
         var bots = new List<IWeatherBot>
             {
-                new RainBot(),
-                new SunBot(),
-                new SnowBot()
+                new RainBot(ConfigurationManager.Instance.RainBot),
+                new SunBot(ConfigurationManager.Instance.SunBot),
+                new SnowBot(ConfigurationManager.Instance.SnowBot)
             };
 
         return bots;
