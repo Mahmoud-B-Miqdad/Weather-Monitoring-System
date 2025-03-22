@@ -9,12 +9,23 @@ namespace WeatherMonitoringSystem.Core
 
         public void AddBot(IWeatherBot bot)
         {
+            if(bot == null)
+                throw new ArgumentNullException("Invalid bot");
+
             _bots.Add(bot);
         }
 
         public void RemoveBot(IWeatherBot bot)
         {
+            if (bot == null)
+                throw new ArgumentNullException(nameof(bot));
+
             _bots.Remove(bot);
+        }
+
+        public List<IWeatherBot> GetAllBots()
+        {
+            return _bots;
         }
 
         public List<IWeatherBot> SetWeatherData(WeatherData data)
