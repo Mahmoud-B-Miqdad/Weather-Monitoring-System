@@ -15,7 +15,7 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void AddBot_Should_Add_Bot_To_List()
+    public void AddBot_ShouldAddBotToList()
     {
         var botMock = new Mock<IWeatherBot>();
 
@@ -25,7 +25,7 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void AddBot_Should_Throw_Exception_When_Bot_Is_Null()
+    public void AddBot_ShouldThrowException_WhenBotIsNull()
     {
         Action act = () => _weatherStation.AddBot(null);
 
@@ -34,7 +34,7 @@ public class WeatherStationTests
 
 
     [Fact]
-    public void RemoveBot_Should_Remove_Bot_From_List()
+    public void RemoveBot_ShouldRemoveBotFromList_ByDefault()
     {
         var botMock = new Mock<IWeatherBot>();
         _weatherStation.AddBot(botMock.Object);
@@ -45,7 +45,7 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void RemoveBot_Should_Throw_Exception_When_Bot_Is_Null()
+    public void RemoveBot_ShouldThrowException_WhenBotIsNull()
     {
         Action act = () => _weatherStation.RemoveBot(null);
 
@@ -53,7 +53,7 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void RemoveBot_Should_Not_Alter_List_When_Bot_Is_Not_In_List()
+    public void RemoveBot_ShouldNotAlterList_WhenBotIsNotInList()
     {
         var botMock = new Mock<IWeatherBot>();
 
@@ -64,7 +64,7 @@ public class WeatherStationTests
 
 
     [Fact]
-    public void GetAllBots_Should_Return_All_Added_Bots()
+    public void GetAllBots_ShouldReturnAllAddedBots_ByDefault()
     {
         var botMock1 = new Mock<IWeatherBot>();
         var botMock2 = new Mock<IWeatherBot>();
@@ -78,14 +78,14 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void GetAllBots_Should_Return_Empty_List_When_No_Bots_Added()
+    public void GetAllBots_ShouldReturnEmptyList_WhenNoBotsAdded()
     {
         _weatherStation.GetAllBots().Should().BeEmpty();
     }
 
 
     [Fact]
-    public void SetWeatherData_Should_Trigger_All_Bots()
+    public void SetWeatherData_ShouldTriggerAllBots_ByDefault()
     {
         var botMock1 = new Mock<IWeatherBot>();
         var botMock2 = new Mock<IWeatherBot>();
@@ -105,7 +105,7 @@ public class WeatherStationTests
     }
 
     [Fact]
-    public void SetWeatherData_Should_Not_Activate_Bots_That_Do_Not_Trigger()
+    public void SetWeatherData_ShouldNotActivateBotsThatDoNotTrigger_ByDefault()
     {
         var botMock = new Mock<IWeatherBot>();
         botMock.SetupGet(b => b.IsActivated).Returns(false);

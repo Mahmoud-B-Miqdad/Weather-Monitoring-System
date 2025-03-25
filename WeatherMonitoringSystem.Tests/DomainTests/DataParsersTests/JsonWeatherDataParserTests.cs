@@ -12,7 +12,7 @@ public class JsonWeatherDataParserTests
     }
 
     [Fact]
-    public void Parse_Should_Return_WeatherData_When_JsonIsValid()
+    public void Parse_ShouldReturnWeatherData_WhenJsonIsValid()
     {
         string json = "{ \"Temperature\": 25, \"Humidity\": 80 }";
 
@@ -26,7 +26,7 @@ public class JsonWeatherDataParserTests
     [Theory]
     [InlineData("{ Temperature: 25, Humidity: ")] 
     [InlineData("{ \"Temperature\": \"invalid\" }")] 
-    public void Parse_Should_Throw_JsonException_When_JsonIsInvalid(string invalidJson)
+    public void Parse_ShouldThrowJsonException_WhenJsonIsInvalid(string invalidJson)
     {
         Action act = () => _parser.Parse(invalidJson);
 
@@ -34,7 +34,7 @@ public class JsonWeatherDataParserTests
     }
 
     [Fact]
-    public void Parse_Should_Handle_Missing_Fields_Correctly()
+    public void Parse_ShouldHandleMissingFieldsCorrectly_ByDefault()
     {
         var json = "{ \"Temperature\": 30 }";
 

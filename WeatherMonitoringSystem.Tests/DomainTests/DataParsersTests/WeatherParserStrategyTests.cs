@@ -19,7 +19,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void SetParser_Should_Set_Parser_Correctly()
+    public void SetParser_ShouldSetParserCorrectly_ByDefault()
     {
         _strategy.SetParser(_parserMock.Object);
 
@@ -32,7 +32,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void SetParser_Should_Throw_Exception_When_Null()
+    public void SetParser_ShouldThrowException_WhenNull()
     {
         Action act = () => _strategy.SetParser(null);
 
@@ -41,7 +41,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void GetWeatherData_Should_Throw_Exception_When_Parser_Not_Set()
+    public void GetWeatherData_ShouldThrowException_WhenParserNotSet()
     {
         Action act = () => _strategy.GetWeatherData("{}");
 
@@ -50,7 +50,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void GetWeatherData_Should_Return_Parsed_Data()
+    public void GetWeatherData_ShouldReturnParsedData()
     {
         var weatherData = _fixture.Create<WeatherData>();
         _parserMock.Setup(p => p.Parse(It.IsAny<string>())).Returns(weatherData);
@@ -62,7 +62,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void GetWeatherData_Should_Throw_JsonException_On_Invalid_Json()
+    public void GetWeatherData_ShouldThrowJsonException_OnInvalidJson()
     {
         _parserMock.Setup(p => p.Parse(It.IsAny<string>())).Throws(new JsonException("Invalid JSON"));
 
@@ -75,7 +75,7 @@ public class WeatherParserStrategyTests
     }
 
     [Fact]
-    public void GetWeatherData_Should_Throw_XmlException_On_Invalid_Xml()
+    public void GetWeatherData_ShouldThrowXmlException_OnInvalidXml()
     {
         _parserMock.Setup(p => p.Parse(It.IsAny<string>())).Throws(new XmlException("Invalid XML"));
 

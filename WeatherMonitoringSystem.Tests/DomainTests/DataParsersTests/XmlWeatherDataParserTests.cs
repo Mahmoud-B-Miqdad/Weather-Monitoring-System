@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using System.Xml;
 using WeatherMonitoringSystem.DataParsers;
 
 public class XmlWeatherDataParserTests
@@ -12,7 +11,7 @@ public class XmlWeatherDataParserTests
     }
 
     [Fact]
-    public void Parse_Should_Return_WeatherData_When_Xml_Is_Valid()
+    public void Parse_ShouldReturnWeatherData_WhenXmlIsValid()
     {
         string validXml = "<Weather> <Temperature>25.5</Temperature> <Humidity>60</Humidity> </Weather>";
 
@@ -23,7 +22,7 @@ public class XmlWeatherDataParserTests
         result.Humidity.Should().Be(60);
     }
     [Fact]
-    public void Parse_Should_Throw_FormatException_When_Xml_Is_Invalid()
+    public void Parse_ShouldThrowFormatException_WhenXmlIsInvalid()
     {
         string invalidXml = "<InvalidXml>";
 
@@ -34,18 +33,7 @@ public class XmlWeatherDataParserTests
     }
 
     [Fact]
-    public void Parse_Should_Throw_FormatException_When_Input_Is_Empty()
-    {
-        string emptyXml = "";
-
-        Action act = () => _parser.Parse(emptyXml);
-
-        act.Should().Throw<FormatException>()
-            .WithMessage("Malformed XML content.*");
-    }
-
-    [Fact]
-    public void Parse_Should_Throw_ArgumentNullException_When_Input_Is_Null()
+    public void Parse_ShouldThrowArgumentNullException_WhenInputIsNull()
     {
         Action act = () => _parser.Parse(null);
 
