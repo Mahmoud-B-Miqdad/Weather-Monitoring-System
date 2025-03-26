@@ -1,7 +1,6 @@
 ﻿
 using WeatherMonitoringSystem.Config;
 using WeatherMonitoringSystem.Core;
-using WeatherMonitoringSystem.Domain.Config;
 
 namespace WeatherMonitoringSystem.Bots;
 
@@ -11,9 +10,9 @@ public class RainBot : IWeatherBot
     public bool IsActivated { get; set; }
     public string Message { get; private set; } = string.Empty;
 
-    public RainBot()
+    public RainBot(BotConfig config)
     {
-        Config = ConfigurationManager.Instance.RainBot;
+        Config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
     public bool Trigger (WeatherData data)

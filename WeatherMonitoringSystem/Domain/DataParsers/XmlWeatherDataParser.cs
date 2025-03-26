@@ -1,22 +1,37 @@
-﻿
+﻿using System.Xml;
 using System.Xml.Serialization;
 using WeatherMonitoringSystem.Core;
 
-namespace WeatherMonitoringSystem.DataParsers;
-
-public class XmlWeatherDataParser : IWeatherDataParser
+namespace WeatherMonitoringSystem.DataParsers
 {
-    public WeatherData Parse(string inputData)
+    public class XmlWeatherDataParser : IWeatherDataParser
     {
-        try
+        public WeatherData Parse(string inputData)
         {
-            var serializer = new XmlSerializer(typeof(WeatherData));
-            using var reader = new StringReader(inputData);
-            return (WeatherData)serializer.Deserialize(reader);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error parsing XML: {ex.Message}");
+
+            if (inputData is null)
+            {
+                throw new ArgumentNullException(nameof(inputData), "Input XML data cannot be null.");
+            }
+
+            try
+            {
+                var serializer = new XmlSerializer(typeof(WeatherData));
+                using var reader = new StringReader(inputData);
+                return (WeatherData)serializer.Deserialize(reader) ?? throw new InvalidOperationException("Failed to deserialize XML.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new FormatException("Invalid XML format or structure.", ex);
+            }
+            catch (XmlException ex)
+            {
+                throw new FormatException("Malformed XML content.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Something went wrong. Please try again later.");
+            }
         }
     }
 }

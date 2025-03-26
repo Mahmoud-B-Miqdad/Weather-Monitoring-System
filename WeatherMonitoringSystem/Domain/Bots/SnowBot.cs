@@ -1,8 +1,5 @@
-﻿
-using WeatherMonitoringSystem.Config;
+﻿using WeatherMonitoringSystem.Config;
 using WeatherMonitoringSystem.Core;
-using WeatherMonitoringSystem.Domain.Config;
-
 namespace WeatherMonitoringSystem.Bots;
 
 public class SnowBot : IWeatherBot
@@ -11,9 +8,9 @@ public class SnowBot : IWeatherBot
     public bool IsActivated { get; set; }
     public string Message { get; private set; } = string.Empty;
 
-    public SnowBot()
+    public SnowBot(BotConfig config)
     {
-        Config = ConfigurationManager.Instance.SnowBot;
+        Config = config ?? throw new ArgumentNullException(nameof(config));
     }
 
     public bool Trigger (WeatherData data)
