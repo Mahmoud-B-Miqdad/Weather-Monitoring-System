@@ -32,16 +32,22 @@ public class WeatherStationTests
         act.Should().Throw<ArgumentNullException>();
     }
 
-
     [Fact]
-    public void RemoveBot_ShouldRemoveBotFromList_ByDefault()
+    public void RemoveBot_ShouldDecreaseBotCount_ByDefault()
     {
-        var botMock = new Mock<IWeatherBot>();
-        _weatherStation.AddBot(botMock.Object);
+        var botMock1 = new Mock<IWeatherBot>();
+        var botMock2 = new Mock<IWeatherBot>();
+        _weatherStation.AddBot(botMock1.Object);
+        _weatherStation.AddBot(botMock2.Object);
 
-        _weatherStation.RemoveBot(botMock.Object);
+        var countBefore = _weatherStation.GetAllBots().Count;
 
-        _weatherStation.GetAllBots().Should().BeEmpty();
+        _weatherStation.RemoveBot(botMock1.Object);
+
+        var countAfter = _weatherStation.GetAllBots().Count;
+
+        countBefore.Should().Be(2);
+        countAfter.Should().Be(1);
     }
 
     [Fact]
